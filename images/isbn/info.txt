@@ -1,0 +1,2 @@
+Directory for downloaded images
+Make sure the webserver has write access to this folder

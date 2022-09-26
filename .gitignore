@@ -1,4 +1,4 @@
-images/isbn/*
+images/isbn/*.jpg
 php/config.php
 database/
 **/@eaDir/
