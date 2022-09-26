@@ -1,4 +1,4 @@
-# library
+# Library
 Library Software for school
 
 ## Manually add the following:
