@@ -11,4 +11,6 @@ In folder php add the file config.php with the following code
   $name   = "database name";
 ?>
 ```
-In de folder images create a subfolder 'isbn'
+
+## Rights
+Give the 'images/isbn' folder write access for the webserver
