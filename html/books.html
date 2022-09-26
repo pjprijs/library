@@ -1,0 +1,182 @@
+<div class="card mb-3 hidden book-add-new">
+    <div class="card-header">
+        <span class="txt-add-book">add book</span>
+        <div style="width: 100px;" class="float-end window-close clickable" onclick="closeAddBookManually();">
+            <button type="button" class="btn-close float-end"></button>
+        </div>
+    </div>
+    <div class="card-body">   
+        <form action="#" method="post" onsubmit="manualFindNewBook(); return false;">
+            <div class="row">
+                <div class="col-lg-1 mb-4"><span class="txt-isbn">ISBN</span><span class="book-add-new-manual">*</span>: </div>
+                <div class="col-lg-4 mb-4"><input type="text" class="form-control book-isbn" placeholder=""/></div>
+                <div class="col-lg-1 mb-4"><button type="submit" class="btn btn-outline-secondary txt-search book-add-new-search">search</button></div>
+            </div>
+        </form>
+        <form action="#" method="post" onsubmit="manualAddNewBook(); return false;">
+            <div class="row book-add-new-manual">
+                <div class="col-lg-1 mb-1"><span class="txt-title">title</span>*: </div>
+                <div class="col-lg-4 mb-1"><input type="text" class="form-control book-title-input" placeholder=""/></div>
+                <div class="col-lg-1 mb-1"></div>
+                <div class="col-lg-1 mb-1"><span class="txt-subtitle">subtitle</span>: </div>
+                <div class="col-lg-4 mb-1"><input type="text" class="form-control book-subtitle-input" placeholder=""/></div>
+                <div class="col-lg-1 mb-1"></div>
+            </div>
+            <div class="row book-add-new-manual">
+                <div class="col-lg-1 mb-1"><span class="txt-author">author</span>*: </div>
+                <div class="col-lg-4 mb-1">
+                    <select class="form-control book-author-input" id="book-author-input" multiple="multiple"></select>
+                    <label for="book-author-input" class="input-label">scheiden door puntkomma ';' of komma ',' voor meerdere auteurs</label>
+                </div>
+                <div class="col-lg-1 mb-1"></div>
+                <div class="col-lg-1 mb-1"><span class="txt-read-level">read-level</span>: </div>
+                <div class="col-lg-4 mb-1">
+                    <select class="form-select book-avi-input">
+                        <option value="0" selected>Onbekend</option>
+                    </select>                
+                </div>
+                <div class="col-lg-1 mb-1"></div>
+            </div>
+            <div class="book-add-new-manual mt-4"></div>
+            <div>
+                <button type="button" class="btn btn-outline-secondary txt-cancel" onClick="closeAddBookManually()">cancel</button>
+                <button type="submit" class="btn btn-secondary txt-add-book book-add-new-manual">add</button>
+            </div>
+        </form>
+    </div><!-- /card body-->
+</div>
+
+<div class="card mb-3 book-search">
+    <div class="card-body">
+        <div class='row'>
+            <div class='col-md-12 col-lg-6'>
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><span class="txt-search">search</span>: </span>
+                    <input type="text" class="form-control book-search-input" placeholder="" onkeyup="searchBook();">
+                    <button class="btn btn-outline-secondary book-search-input-clear txt-clear disabled" type="button" onclick="emptyBookSearch();">clear</button>
+                </div>        
+            </div>
+            <div class='col-md-8 col-lg-6'>
+                <button type="button" class="btn btn-outline-secondary button-books-add" onClick="addBookManually();"><span class="txt-add-book">add book</span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3 book-overview">
+    <div class="card-body">
+        <div class='row'>
+            <div class="col-md-7 book-overview-header"></div>
+            <div class='col-md-5 w-auto ms-auto'>
+                <button type="button" class="book-overview-combine btn btn-outline-secondary" onclick="showCombineBooks(true);"><i class='fas fa-layer-group'></i> <span class="txt-books">books</span> <span class="txt-merge">merge</span></button>
+                <button type="button" class="book-overview-merge btn btn-outline-secondary hidden" onclick="mergeBooks();"><i class='fas fa-code-merge'></i> <span class="txt-merge">merge</span></button>
+                <button type="button" class="book-overview-combine-cancel btn btn-outline-secondary hidden" onclick="showCombineBooks(false);"><i class='fas fa-xmark'></i> <span class="txt-cancel">cancel</span></button>
+                <span class="book-overview-buttons">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <button type="button" class="book-overview-buttons book-overview-previous disabled btn btn-outline-secondary" onclick="bookOverviewPrevious();"><i class='fas fa-angle-left'></i> <span class="txt-previous">previous</span></button>
+                <button type="button" class="book-overview-buttons book-overview-next disabled btn btn-outline-secondary" onclick="bookOverviewNext();"><span class="txt-next">next</span> <i class='fas fa-angle-right'></i></button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-responsive">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th style="min-width:250px" class="txt-title" onclick="combineBooks()">title</th>
+                        <th style="min-width:250px" class="txt-author">author</th>
+                        <th style="min-width:30px" class="txt-read-level">level</th>
+                        <th style="min-width:30px" class="text-center txt-lent">lent</th>
+                        <th style="min-width:50px" colspan="2"></th>
+                    </tr>
+                </thead>
+                <tbody class="books-list"></tbody>
+            </table>
+        </div>
+        <div class='row book-overview-buttons'>
+            <div class='col-md-5 w-auto ms-auto'>
+                <button type="button" class="book-overview-previous disabled btn btn-outline-secondary" onclick="bookOverviewPrevious();"><i class='fas fa-angle-left'></i> <span class="txt-previous">previous</span></button>
+                <button type="button" class="book-overview-next disabled btn btn-outline-secondary" onclick="bookOverviewNext();"><span class="txt-next">next</span> <i class='fas fa-angle-right'></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3 book-details hidden">
+    <div class="card-header">
+        <span class="txt-book">info</span> <span class="txt-info-long">info</span> 
+        <div style="width: 100px;" class="float-end window-close clickable" onclick="closeBookDetails();">
+            <button type="button" class="btn-close float-end"></button>
+        </div>
+    </div>
+    <div class="card-body book-details-body">
+        <div class="row mb-5">
+            <div class="col-sm-4 col-md-3 col-lg-2 d-none d-sm-block">
+                <div class="book-details-image"></div>
+            </div>
+            <div class="col-sm-8 col-md-4 mb-2">
+                <div class="book-details-title"></div>
+                <div class="book-details-subtitle mb-3"></div>
+                <table>
+                    <tr>
+                        <td style="vertical-align: top" class="pe-2"><span class="txt-author">author</span>: </td>
+                        <td style="vertical-align: top" class="book-details-author">author</td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top" class="pe-2"><span class="txt-serie">serie</span>: </td>
+                        <td style="vertical-align: top" class="book-details-serie">serie</td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top" class="pe-2"><span class="txt-isbn">ISBN</span>: </td>
+                        <td style="vertical-align: top" class="book-details-isbn">isbn</td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top" class="pe-2"><span class="txt-read-level">read level</span>: </td>
+                        <td style="vertical-align: top" class="book-details-read-level">read level</td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top" class="pe-2"><span class="txt-pages">pages</span>: </td>
+                        <td style="vertical-align: top" class="book-details-pages">-</td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top" class="pe-2"><span class="txt-publication">publication</span>: </td>
+                        <td style="vertical-align: top" class="book-details-publication">-</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-sm-12 col-md-5">
+                <div class="book-details-description"></div>
+            </div>
+        </div>        
+        <div class='row book-history-buttons'>
+            <div class="col-md-7 book-history-header"></div>
+            <div class='col-md-5 w-auto ms-auto'>
+                <button type="button" class="book-history-previous disabled btn btn-outline-secondary" onclick="bookHistoryPrevious();"><i class='fas fa-angle-left'></i> <span class="txt-previous">previous</span></button>
+                <button type="button" class="book-history-next disabled btn btn-outline-secondary" onclick="bookHistoryNext();"><span class="txt-next">next</span> <i class='fas fa-angle-right'></i></button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-responsive">
+                <thead>
+                    <tr>
+                        <th style="min-width:250px" class="txt-user">user</th>
+                        <th style="min-width:30px" class="txt-lent">lent</th>
+                        <th style="min-width:30px" class="txt-returned">returned</th>
+                        <th style="min-width:50px" colspan="2"></th>
+                    </tr>
+                </thead>
+                <tbody class="books-details-history"></tbody>
+            </table>
+        </div>
+        <div class='row book-history-buttons'>
+            <div class='col-md-5 w-auto ms-auto'>
+                <button type="button" class="book-history-previous disabled btn btn-outline-secondary" onclick="bookHistoryPrevious();"><i class='fas fa-angle-left'></i> <span class="txt-previous">previous</span></button>
+                <button type="button" class="book-history-next disabled btn btn-outline-secondary" onclick="bookHistoryNext();"><span class="txt-next">next</span> <i class='fas fa-angle-right'></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        &nbsp;
+        <div style="width: 100px;" class="float-end window-close clickable" onclick="closeBookDetails();">
+            <button type="button" class="btn-close float-end"></button>
+        </div>
+    </div>
+</div>

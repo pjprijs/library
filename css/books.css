@@ -1,0 +1,24 @@
+.book-details-title {
+    font-size: 1.4em;
+    font-weight: 400;
+}
+
+.book-details-subtitle {
+    font-size: 1.2em;
+    font-weight: 100;
+}
+
+.book-overview-serie {
+    font-size: 0.9em;
+    font-weight: 100;
+    color: #666666;
+}
+
+.book-details-isbn-link {
+    text-decoration: none;
+    color: var(--bs-body-color);
+}
+.book-details-isbn-link:hover {
+    text-decoration: none;
+    color: var(--bs-body-color);
+}

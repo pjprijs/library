@@ -1,0 +1,99 @@
+<div class="card mb-3">
+    <div class="card-body">
+        <div class='row'>
+            <div class='col-sm-3 col-md-2 col-lg-2'>
+                <span class="txt-user">user</span>:
+            </div>
+            <div class='col-sm-6 col-md-4 col-lg-4 loan-select-user-div'>
+                <select class="loan-select-user" style="width: 100%"></select>
+            </div>
+            <div class='col-sm-9 col-md-10 col-lg-10 loan-display-user-div hidden'>
+                <span class="loan-display-user pe-3"></span>
+                <button type="button" class="btn btn-outline-secondary btn-sm loan-no-book-button txt-cancel" onClick="showNewLoanUser();"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3 loan-find-book hidden">
+    <div class="card-body">
+        <div class='row'>
+            <div class='col-sm-3 col-md-2 col-lg-2'>
+                <span class="txt-loan">loan</span>:
+            </div>
+            <div class='col-sm-6 col-md-4 col-lg-4'>
+                <select class="loan-find-book-select" style="width: 100%"></select>
+            </div>
+            <div class='col-sm-6 col-md-6 col-lg-6'>
+                <button type="button" class="btn btn-outline-secondary loan-find-book-button txt-loan hidden" onClick="setLoanedBook();">loan</button>
+                <span class="loan-no-book hidden">
+                    <span class="txt-all-copies-lent">All copies are lent</span>!
+                    <button type="button" class="btn btn-outline-secondary btn-sm loan-no-book-button txt-check" onClick="showBooks(); getBookDetails(selectedBookId, function(){ showLoan();});">check</button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3 loan-user-books hidden">
+    <div class="card-body">
+        <div class='row loan-open-buttons'>
+            <div class='col-md-7 loan-open-title'></div>
+            <div class='col-md-5 w-auto ms-auto'>
+                <button type="button" class="loan-open-previous disabled btn btn-outline-secondary" onclick="loanOpenPrevious();"><i class='fas fa-angle-left'></i> <span class="txt-previous">previous</span></button>
+                <button type="button" class="loan-open-next disabled btn btn-outline-secondary" onclick="loanOpenNext();"><span class="txt-next">next</span> <i class='fas fa-angle-right'></i></button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th style="min-width:250px" class="txt-title">title</th>
+                        <th style="min-width:30px" class="txt-lent">lent</th>
+                        <th style="min-width:50px" colspan="2"></th>
+                    </tr>
+                </thead>
+                <tbody class="loan-user-books-table"></tbody>
+            </table>        
+        </div>
+        <div class='row loan-open-buttons'>
+            <div class='col-md-5 w-auto ms-auto'>
+                <button type="button" class="loan-open-previous disabled btn btn-outline-secondary" onclick="loanOpenPrevious();"><i class='fas fa-angle-left'></i> <span class="txt-previous">previous</span></button>
+                <button type="button" class="loan-open-next disabled btn btn-outline-secondary" onclick="loanOpenNext();"><span class="txt-next">next</span> <i class='fas fa-angle-right'></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3 loan-user-books-history hidden">
+    <div class="card-header txt-history">
+        history         
+    </div>
+    <div class="card-body">
+        <div class='row loan-history-buttons'>
+            <div class='col-md-7 loan-history-title'></div>
+            <div class='col-md-5 w-auto ms-auto'>
+                <button type="button" class="loan-history-previous disabled btn btn-outline-secondary" onclick="loanHistoryPrevious();"><i class='fas fa-angle-left'></i> <span class="txt-previous">previous</span></button>
+                <button type="button" class="loan-history-next disabled btn btn-outline-secondary" onclick="loanHistoryNext();"><span class="txt-next">next</span> <i class='fas fa-angle-right'></i></button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th style="min-width:250px" class="txt-title">title</th>
+                        <th style="min-width:30px" class="txt-lent">lent</th>
+                        <th style="min-width:30px" class="txt-returned">returned</th>
+                    </tr>
+                </thead>
+                <tbody class="loan-user-books-history-table"></tbody>
+            </table> 
+        </div>  
+        <div class='row loan-history-buttons'>            
+            <div class='col-md-5 w-auto ms-auto'>
+                <button type="button" class="loan-history-previous disabled btn btn-outline-secondary" onclick="loanHistoryPrevious();"><i class='fas fa-angle-left'></i> <span class="txt-previous">previous</span></button>
+                <button type="button" class="loan-history-next disabled btn btn-outline-secondary" onclick="loanHistoryNext();"><span class="txt-next">next</span> <i class='fas fa-angle-right'></i></button>
+            </div>
+        </div>
+    </div>
+</div>

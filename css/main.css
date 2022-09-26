@@ -1,0 +1,73 @@
+body {
+	overflow: hidden;
+}
+
+.page { display: none }
+.hidden { display: none }
+
+.page-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.footer {
+  position: fixed; 
+  border-top: solid 1px #999999; 
+  bottom: 0px; 
+  left: 0px; 
+  height: 25px; 
+  line-height: 25px;
+  width: 100%; 
+  background-color: #EEEEEE;
+  z-index: 99;
+}
+
+.footer .pull-left {
+  margin-left: 15px;
+}
+.footer .pull-right {
+  margin-right: 15px;
+}
+
+.msgContainer {
+	position: absolute;
+}
+#wait{
+  display: none;
+  position: fixed;
+  width: 32px;
+  height: 32px;  
+}
+.fa.disabled,
+.fa[disabled],
+.disabled > .fa,
+[disabled] > .fa {
+  opacity: 0.5;
+  /*optional*/ cursor: not-allowed;
+  /*optional*/ pointer-events: none;
+}
+
+
+.clickable {
+  cursor: pointer;
+}
+
+th {
+  font-size: 0.8em;
+  color: #999999;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.input-label {
+  font-size: 0.8em;
+  font-weight: 100;
+  color: #666666;
+}
+/*
+.nav-link.active {
+  background-color: #EEEEEE;
+  border-radius: 5px;
+  padding-left: 5px;
+}
+*/
