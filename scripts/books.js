@@ -66,7 +66,9 @@ function manualFindNewBook() {
         if(data.bookId > 0) {
             updateBookAmount(data);
         } else {
+            console.log("test");
             findNewBook(isbn, function(data2){
+                console.log('a');
                 if(Number.isInteger(data2.bookId)) {
                     showSuccessMsg(data2.title + ' ' + txtAddedToCollection + '.');
                     closeAddBookManually();
@@ -153,9 +155,9 @@ function findNewBook(isbn, callback) {
     doLoad('findNewBook.php', {
         isbn: isbn
     }, function(success, data){
-        if(success) {
+        //if(success) {
             callback(data);
-        }
+        //}
     });
 }
 
@@ -477,6 +479,41 @@ function showBookDetails(data) {
     for(i in aviArray) {
         $('.book-avi-edit').append($('<option value="' + aviArray[i].id + '"' + (data.aviId == aviArray[i].id ? ' selected="selected"' : '') + '>').append(aviArray[i].name));
     }
+}
+
+function showBookDetailsTags() {
+    $('.book-details-tags').select2({
+        tags: true,
+        tokenSeparators: [',', ';'],
+        language: langCode,
+        placeholder: txtFindAuthor,
+        minimumInputLength: 2,
+        ajax: {
+            url: 'ajax/getAuthors.php',
+            dataType: 'jsonp',
+            delay: searchDelay,
+            processResults: function (data) {
+                return {
+                    results: data.data.results
+                };
+            },
+            data: function (params) {
+                var query = {
+                    search: params.term,
+                    limit: 10,
+                    page: params.page || 1
+                }
+                return query;
+            }
+        }
+    }).on('select2:select', function (e) {
+        var data = e.params.data;
+        selectedUserId = data.id
+    }).on('select2:open', function (e) {
+        const evt = "scroll.select2";
+        $(e.target).parents().off(evt);
+        $(window).off(evt);
+    });        
 }
 
 function bookEditAvi(show) {

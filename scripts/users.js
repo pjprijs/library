@@ -53,9 +53,63 @@ function makeUserOverview(allData) {
     for(i=0; i<data.length; i++) {
         $('.users-list').append(
             $('<tr>').append(
-                $('<td>' + data[i].fullname + '</td>')
+                $('<td>').append(
+                    $('<span class="users-list-' + data[i].id + '-text">' + data[i].fullname + '</span>')
+                ).append(
+                    $('<div class="users-list-' + data[i].id + '-edit hidden">').append(
+                        $('<div class="input-group">').append(
+                            $('<div class="input-group-prepend">').append(
+                                $('<div class="input-group-text">' + txtFirstname + ':</div>')
+                            )
+                        ).append(
+                            $('<input width="10" type="text" class="form-control users-list-' + data[i].id + '-name" placeholder="' + txtFirstname + '" value="' + data[i].name + '"/>')
+                        )
+                    ).append(
+                        $('<div class="input-group">').append(
+                            $('<div class="input-group-prepend">').append(
+                                $('<div class="input-group-text">' + txtPrefix + ':</div>')
+                            )
+                        ).append(
+                            $('<input type="text" class="form-control users-list-' + data[i].id + '-prefix" placeholder="' + txtPrefix + '" value="' + data[i].prefix + '"/>')
+                        )
+                    ).append(
+                        $('<div class="input-group">').append(
+                            $('<div class="input-group-prepend">').append(
+                                $('<div class="input-group-text">' + txtLastname + ':</div>')
+                            )
+                        ).append(
+                            $('<input type="text" class="form-control users-list-' + data[i].id + '-surname" placeholder="' + txtLastname + '" value="' + data[i].surname + '"/>')
+                        )
+                    )
+                )
             ).append(
                 $('<td>' + txtGroup + ' ' + (data[i].groupname != '' ? data[i].groupname : data[i].schoolyear) + '</td>')
+            ).append(
+                $('<td>').append(
+                    $('<div class="users-list-' + data[i].id + '-icon">').append(
+                        $('<i class="fas fa-pen clickable" onclick="userEdit(' + data[i].id + ')" data-toggle="tooltip" title="' + txtEdit + '"></i>')
+                    )
+                )
             ));
     }
+}
+
+function userEdit(id) {
+    // users-list-' + data[i].id + '-text 
+  if($('.users-list-' + id + '-text').is(":visible")) {
+    $('.users-list-' + id + '-text').hide();
+    $('.users-list-' + id + '-edit').show();
+    $('.users-list-' + id + '-icon').html(
+        $('<button type="button" class="btn btn-success mx-3">' + txtSave + '</button>')
+    ).append(
+        $('<button type="button" class="btn btn-danger" onclick="userEdit(' + id + ')">' + txtCancel + '</button>')
+    );
+  } else {
+    $('.users-list-' + id + '-edit').hide();
+    $('.users-list-' + id + '-text').show();
+    $('.users-list-' + id + '-icon').html(
+        $('<i class="fas fa-pen clickable" onclick="userEdit(' + id + ')" data-toggle="tooltip" title="' + txtEdit + '"></i>')
+    );
+
+  }
 }

@@ -14,7 +14,7 @@ try {
 	$result["error"] = 0;
 	$result["errorMsg"] = "";
 } catch(Exception $e) {
-	$result["error"] = 5;
+	$result["error"] = 0;
 	$result["errorMsg"] = $e->getMessage();
 }	
 

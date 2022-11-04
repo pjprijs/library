@@ -16,10 +16,6 @@ if(isset($_COOKIE['navbarStyle'])) $navbarStyle = $_COOKIE['navbarStyle'];
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
     <link rel="manifest" href="images/favicon/site.webmanifest">
     <meta name="viewport" content="width=device-width">
-    <!--
-      sketchy
-      sandstone
-    -->
     <!--<link href="libs/bootstrap-5.1.3-dist/css/bootstrap.min.css" rel="stylesheet">-->
     <link href="libs/bootstrap-5.1.3-dist/themes/<?php echo $currentStyle; ?>.min.css" rel="stylesheet">
     <link href="libs/select2/select2.min.css" rel="stylesheet" />
@@ -79,6 +75,7 @@ if(isset($_COOKIE['navbarStyle'])) $navbarStyle = $_COOKIE['navbarStyle'];
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item txt-read-level" href="#" onClick="showConfig('avi');">avi</a></li>
                 <li><a class="dropdown-item txt-group" href="#" onClick="showConfig('group');">group</a></li>
+                <li><a class="dropdown-item txt-author" href="#" onClick="showConfig('author');">author</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><i class="fas fa-palette"></i> style</li>
                 <li><a class="dropdown-item menu-style" href="#" onClick="toggleStyle('sandstone');">standaard</a></li>

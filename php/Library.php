@@ -54,7 +54,7 @@ class Library implements LibraryInterface {
 
     public function returnLoanedBook($loanId) {
         global $mysqli;
-        $sql = "UPDATE loan SET enddate=NOW() WHERE id=" . $mysqli->real_escape_string($loanId);
+        $sql = "UPDATE loan SET enddate=NOW() WHERE id=" . $this->escapeSql($loanId);
         $mysqli->query($sql);
         if($mysqli->errno > 0) throw new Exception("Library::returnLoanedBook($loanId) - " . $mysqli->error);
         return $this;
@@ -64,10 +64,10 @@ class Library implements LibraryInterface {
         global $mysqli;
         $mysqli->autocommit(FALSE);
         $success = true;
-        $sql = "UPDATE loan SET enddate='1111-11-11 11:11:11' WHERE id=" . $mysqli->real_escape_string($loanId);
+        $sql = "UPDATE loan SET enddate='1111-11-11 11:11:11' WHERE id=" . $this->escapeSql($loanId);
         $mysqli->query($sql) ? null : $success = false;
 
-        $sql = "SELECT book FROM loan WHERE id = " . $mysqli->real_escape_string($loanId);
+        $sql = "SELECT book FROM loan WHERE id = " . $this->escapeSql($loanId);
         if($result = $mysqli->query($sql)) {
             if($row = $result->fetch_assoc()) {
                 $book = (new Book)->init((int)$row["book"], true, false);
@@ -91,7 +91,7 @@ class Library implements LibraryInterface {
         foreach($combineBookArray as $value) {
             if($value != $mainBookId) {
                 if($bookIdList != "") $bookIdList .= ",";
-                $bookIdList .= $mysqli->real_escape_string($value);
+                $bookIdList .= $this->escapeSql($value);
             }
         }
 
@@ -103,22 +103,22 @@ class Library implements LibraryInterface {
             $result->close();
         }
 
-        $sql = "UPDATE IGNORE book_author SET book = " . $mysqli->real_escape_string($mainBookId) . " WHERE book IN(" . $bookIdList . ")";
+        $sql = "UPDATE IGNORE book_author SET book = " . $this->escapeSql($mainBookId) . " WHERE book IN(" . $bookIdList . ")";
         $mysqli->query($sql) ? null : $all_query_ok=false;
         $sql = "DELETE FROM book_author WHERE book IN(" . $bookIdList . ")";        
         $mysqli->query($sql) ? null : $all_query_ok=false;
 
-        $sql = "UPDATE IGNORE book_isbn SET book = " . $mysqli->real_escape_string($mainBookId) . " WHERE book IN(" . $bookIdList . ")";
+        $sql = "UPDATE IGNORE book_isbn SET book = " . $this->escapeSql($mainBookId) . " WHERE book IN(" . $bookIdList . ")";
         $mysqli->query($sql) ? null : $all_query_ok=false;
         $sql = "DELETE FROM book_isbn WHERE book IN(" . $bookIdList . ")";
         $mysqli->query($sql) ? null : $all_query_ok=false;
 
-        $sql = "UPDATE IGNORE book_serie SET book = " . $mysqli->real_escape_string($mainBookId) . " WHERE book IN(" . $bookIdList . ")";
+        $sql = "UPDATE IGNORE book_serie SET book = " . $this->escapeSql($mainBookId) . " WHERE book IN(" . $bookIdList . ")";
         $mysqli->query($sql) ? null : $all_query_ok=false;
         $sql = "DELETE FROM book_serie WHERE book IN(" . $bookIdList . ")";
         $mysqli->query($sql) ? null : $all_query_ok=false;
 
-        $sql = "UPDATE IGNORE loan SET book = " . $mysqli->real_escape_string($mainBookId) . " WHERE book IN(" . $bookIdList . ")";
+        $sql = "UPDATE IGNORE loan SET book = " . $this->escapeSql($mainBookId) . " WHERE book IN(" . $bookIdList . ")";
         $mysqli->query($sql) ? null : $all_query_ok=false;
         $sql = "DELETE FROM loan WHERE book IN(" . $bookIdList . ")";
         $mysqli->query($sql) ? null : $all_query_ok=false;
@@ -172,8 +172,8 @@ class Library implements LibraryInterface {
 
     public function delItem($table, $value) {
         global $mysqli;
-        $sql = "DELETE FROM `" . $mysqli->real_escape_string($table) . "`
-                WHERE id = " . $mysqli->real_escape_string($value);
+        $sql = "DELETE FROM `" . $this->escapeSql($table) . "`
+                WHERE id = " . $this->escapeSql($value);
         $mysqli->query($sql);
         if($mysqli->errno > 0) throw new Exception($mysqli->error);        
         return $mysqli->insert_id;
@@ -181,9 +181,9 @@ class Library implements LibraryInterface {
 
     public function setItemActive($table, $value, $active) {
         global $mysqli;
-        $sql = "UPDATE `" . $mysqli->real_escape_string($table) . "`
-                SET active = '" . $mysqli->real_escape_string($active) . "'
-                WHERE id = " . $mysqli->real_escape_string($value);
+        $sql = "UPDATE `" . $this->escapeSql($table) . "`
+                SET active = '" . $this->escapeSql($active) . "'
+                WHERE id = " . $this->escapeSql($value);
         $mysqli->query($sql);
         if($mysqli->errno > 0) throw new Exception($mysqli->error);        
         return $mysqli->insert_id;
@@ -191,9 +191,9 @@ class Library implements LibraryInterface {
 
     public function setItemName($table, $value, $name) {
         global $mysqli;
-        $sql = "UPDATE `" . $mysqli->real_escape_string($table) . "`
-                SET name = '" . $mysqli->real_escape_string($name) . "'
-                WHERE id = " . $mysqli->real_escape_string($value);
+        $sql = "UPDATE `" . $this->escapeSql($table) . "`
+                SET name = '" . $this->escapeSql($name) . "'
+                WHERE id = " . $this->escapeSql($value);
         $mysqli->query($sql);
         if($mysqli->errno > 0) throw new Exception($mysqli->error);        
         return $mysqli->insert_id;
@@ -202,7 +202,7 @@ class Library implements LibraryInterface {
     public function getItems($item) {
         global $mysqli;
         $itemArray = array();
-        $sql = "SELECT id, name, `order`, active FROM `" . $mysqli->real_escape_string($item) . "` ORDER BY `order` ASC";
+        $sql = "SELECT id, name, `order`, active FROM `" . $this->escapeSql($item) . "` ORDER BY `order` ASC";
         if($result = $mysqli->query($sql)){
             while($row = $result->fetch_assoc()) {
                 $itemArray[$row["order"]]["id"] = $row["id"];
@@ -221,9 +221,9 @@ class Library implements LibraryInterface {
         $success = true;
         $errorMsg = "";
         foreach($data as $index=>$value) {
-            $sql = "UPDATE `" . $mysqli->real_escape_string($table) . "`
-                SET `order` = " . $mysqli->real_escape_string($index) . "
-                WHERE id = " . $mysqli->real_escape_string($value) . "
+            $sql = "UPDATE `" . $this->escapeSql($table) . "`
+                SET `order` = " . $this->escapeSql($index) . "
+                WHERE id = " . $this->escapeSql($value) . "
             ";
             if(!$mysqli->query($sql)) {
                 $success = false;
@@ -239,7 +239,7 @@ class Library implements LibraryInterface {
     private function getAuthorsWhere($searchString) {
         global $mysqli;
         $where = "";
-        $searchString = trim($mysqli->real_escape_string($searchString));
+        $searchString = trim($this->escapeSql($searchString));
         if($searchString != "") {
             $where = " WHERE a.name LIKE '%" . $searchString . "%'
                 OR  a.display_name LIKE '%" . $searchString . "%'
@@ -285,7 +285,7 @@ class Library implements LibraryInterface {
     private function getUsersWhere($searchString) {
         global $mysqli;
         $where = "";
-        $searchString = trim($mysqli->real_escape_string($searchString));
+        $searchString = trim($this->escapeSql($searchString));
         if($searchString != "") {
             $where = " WHERE u.name LIKE '%" . $searchString . "%'
                 OR  u.surname LIKE '%" . $searchString . "%'
@@ -330,6 +330,9 @@ class Library implements LibraryInterface {
                 $index = count($data);
                 $data[$index]["id"] = $user->getId();
                 $data[$index]["fullname"] = $user->getFullname();
+                $data[$index]["name"] = $user->getName();
+                $data[$index]["prefix"] = $user->getPrefix();
+                $data[$index]["surname"] = $user->getSurname();
                 $data[$index]["schoolyear"] = $user->getSchoolyear();
                 $data[$index]["groupname"] = $user->getGroupname();
 
@@ -341,7 +344,7 @@ class Library implements LibraryInterface {
     private function getLoanedBooksTotalCount($userId, $open) {
         global $mysqli;
         $sqlCount = "SELECT COUNT(1) AS amount FROM `loan` l 
-            WHERE l.user = " . $mysqli->real_escape_string($userId) . "
+            WHERE l.user = " . $this->escapeSql($userId) . "
             AND enddate " . ($open === "true" ? "" : " !") . "= '0000-00-00 00:00:00'";
         $amountOfLoans = 0;
         if($result = $mysqli->query($sqlCount)) {
@@ -357,7 +360,7 @@ class Library implements LibraryInterface {
         global $mysqli;
         $sql = "SELECT l.id AS loan, l.book, DATE_FORMAT(l.startdate, '%e %M \'%y') AS start_date, DATE_FORMAT(l.enddate, '%e %M \'%y') AS end_date, l.enddate 
             FROM loan l
-            WHERE l.user = " . $mysqli->real_escape_string($userId) . "
+            WHERE l.user = " . $this->escapeSql($userId) . "
             AND l.enddate " . ($open === "true" ? "" : " !") . "= '0000-00-00 00:00:00'
             ORDER BY l.startdate " . ($open === "true" ? "ASC" : "DESC") . "
         ";
@@ -379,7 +382,7 @@ class Library implements LibraryInterface {
         $bookIdList = "";
         $sql = "SELECT DISTINCT ba.book FROM author a 
         LEFT JOIN book_author ba ON a.id = ba.author
-        WHERE a.name LIKE '%" . $mysqli->real_escape_string($searchValue) . "%' OR  a.display_name LIKE '%" . $mysqli->real_escape_string($searchValue) . "%'";
+        WHERE a.name LIKE '%" . $this->escapeSql($searchValue) . "%' OR  a.display_name LIKE '%" . $this->escapeSql($searchValue) . "%'";
         if($result = $mysqli->query($sql)) {
             while($row = $result->fetch_assoc()){
                 if($bookIdList != "") $bookIdList .= ",";
@@ -393,7 +396,7 @@ class Library implements LibraryInterface {
         global $mysqli;
         $bookIdList = "";
         $sql = "SELECT DISTINCT bi.book FROM book_isbn bi 
-        WHERE bi.isbn LIKE '%" . $mysqli->real_escape_string($searchValue) . "%'";
+        WHERE bi.isbn LIKE '%" . $this->escapeSql($searchValue) . "%'";
         if($result = $mysqli->query($sql)) {
             while($row = $result->fetch_assoc()){
                 if($bookIdList != "") $bookIdList .= ",";
@@ -408,7 +411,7 @@ class Library implements LibraryInterface {
         $bookIdList = "";
         $sql = "SELECT DISTINCT bs.book FROM `serie` s 
         INNER JOIN book_serie bs ON s.id = bs.serie 
-        WHERE s.name LIKE '%" . $mysqli->real_escape_string($searchValue) . "%'";
+        WHERE s.name LIKE '%" . $this->escapeSql($searchValue) . "%'";
         if($result = $mysqli->query($sql)) {
             while($row = $result->fetch_assoc()){
                 if($bookIdList != "") $bookIdList .= ",";
@@ -419,7 +422,9 @@ class Library implements LibraryInterface {
     }
 
     private function getBooksWhere($searchValue) {
+        global $mysqli;
         $where = " WHERE b.amount > 0";
+        $searchValue = trim($this->escapeSql($searchValue));
         if($searchValue != "") {
             $where .= " AND (b.title LIKE '%" . $searchValue . "%' OR b.subtitle LIKE '%" . $searchValue . "%'";
             $bookIdList = $this->getBookIdListAuthors($searchValue);
@@ -468,7 +473,7 @@ class Library implements LibraryInterface {
 
     private function checkItemAmount($table, $value) {
         global $mysqli;
-        $sql = "SELECT COUNT(1) AS amount FROM `" . $mysqli->real_escape_string($table) . "` WHERE name = '" . $mysqli->real_escape_string(strtolower($value)) . "'";
+        $sql = "SELECT COUNT(1) AS amount FROM `" . $this->escapeSql($table) . "` WHERE name = '" . $this->escapeSql(strtolower($value)) . "'";
         if($result = $mysqli->query($sql)) {
             if($row = $result->fetch_assoc()) {
                 if($row["amount"] > 0) throw new Exception("Value '" . $value . "' already exists in table " . $table);
@@ -482,7 +487,7 @@ class Library implements LibraryInterface {
     private function getItemMaxOrder($table, $value) {
         global $mysqli;
         $maxOrder = 0;
-        $sql = "SELECT MAX(`order`) AS maxOrder FROM `" . $mysqli->real_escape_string($table) . "`";
+        $sql = "SELECT MAX(`order`) AS maxOrder FROM `" . $this->escapeSql($table) . "`";
         if($result = $mysqli->query($sql)) {
             if($row = $result->fetch_assoc()) {
                 $maxOrder = (int)$row["maxOrder"];
@@ -492,6 +497,12 @@ class Library implements LibraryInterface {
         }
         if($mysqli->errno > 0) throw new Exception($mysqli->error);
         return $maxOrder;
+    }
+
+    private function escapeSql($value) {
+        global $mysqli;
+        $value = str_replace('%','\%', $value);
+        return $mysqli->real_escape_string($value);
     }
 
 }
