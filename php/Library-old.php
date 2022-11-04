@@ -373,7 +373,10 @@ class Library {
                 ON DUPLICATE KEY UPDATE amount=amount+1
                 ";
         $mysqli->query($sql);
-        if($mysqli->errno > 0) throw new Exception("addBook($title, $subtitle, $avi, $publishedDate, $language, $description, $pageCount, $md5hash) - " . $mysqli->error);;
+        if($mysqli->errno > 0) {
+            echo $mysqli->error . "<br/>";
+            throw new Exception("addBook($title, $subtitle, $avi, $publishedDate, $language, $description, $pageCount, $md5hash) - " . $mysqli->error);;
+        }
         return $mysqli->insert_id; 
     }
 
