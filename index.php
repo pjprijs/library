@@ -75,6 +75,7 @@ if(isset($_COOKIE['navbarStyle'])) $navbarStyle = $_COOKIE['navbarStyle'];
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item txt-read-level" href="#" onClick="showConfig('avi');">avi</a></li>
                 <li><a class="dropdown-item txt-group" href="#" onClick="showConfig('group');">group</a></li>
+                <li><a class="dropdown-item txt-author" href="#" onClick="showConfig('author');">author</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><i class="fas fa-palette"></i> style</li>
                 <li><a class="dropdown-item menu-style" href="#" onClick="toggleStyle('sandstone');">standaard</a></li>

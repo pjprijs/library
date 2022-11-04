@@ -241,6 +241,7 @@ class Book implements BookInterface {
         $description = @trim($data["description"]);
         $isbn = $data["isbn"];
         $pageCount = @trim($data["pageCount"]);
+        if($pageCount == "") $pageCount = 0;
         $edition = @trim($data["edition"]);
         $publishedDate = @trim($data["publishedDate"]);
         $language = @trim($data["language"]);

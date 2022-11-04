@@ -330,6 +330,9 @@ class Library implements LibraryInterface {
                 $index = count($data);
                 $data[$index]["id"] = $user->getId();
                 $data[$index]["fullname"] = $user->getFullname();
+                $data[$index]["name"] = $user->getName();
+                $data[$index]["prefix"] = $user->getPrefix();
+                $data[$index]["surname"] = $user->getSurname();
                 $data[$index]["schoolyear"] = $user->getSchoolyear();
                 $data[$index]["groupname"] = $user->getGroupname();
 

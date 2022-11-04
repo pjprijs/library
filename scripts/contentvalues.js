@@ -11,6 +11,7 @@ let menuButtonStats = 'Test Stats';
 let menuButtonConfig = 'Configuratie';
 
 //general items
+let txtSave = 'opslaan';
 let txtCancel = 'annuleren';
 let txtClose = 'sluiten';
 let txtCheck = 'controleer';
@@ -73,6 +74,7 @@ let txtUsers = 'leerlingen';
 let txtName = 'naam';
 let txtFirstname = 'voornaam';
 let txtLastname = 'achternaam';
+let txtPrefix = 'tussenvoegsel';
 let txtGroup = 'groep';
 
 //php err msg
