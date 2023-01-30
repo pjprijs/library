@@ -1,4 +1,6 @@
 
+let isSimple = false;
+
 $(function() {
     doLoad('init.php', {}, function(success, data){
       if(success) {

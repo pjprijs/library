@@ -323,6 +323,7 @@ function checkLoanBookAction(bookId) {
         if(loanedBooksArray.includes(parseInt(data.bookId))) {
             playFound();   
             //Book is returned
+            //TODO: Check if loandate is today -> then confirmation
             loanId = $('.loan-user-books-id-' + data.bookId).attr('loanId');
             returnLoanedBook(loanId, data.title, function(){
                 getLoanedBooks();
@@ -338,7 +339,9 @@ function checkLoanBookAction(bookId) {
                     defaultModalExitFunction = function(){
                         selectedBookId = null;
                     }
-                    setModal(txtLoan, data.title + ' ' + txtLoan + '?', txtLoan, true)
+                    let isbnImage = 'images/isbn/unknown.jpg';
+                    setModal(txtLoan, '<img class="book-details-image-' + data.bookId + '" src="' + isbnImage + '" align="left" width="75"/>' + data.title + ' ' + txtLoan + '?', txtLoan, true);
+                    loadIsbnImage(data.isbn, $('.book-details-image-' + data.bookId), 0);
                 } else {
                     playNotFound();
                     //No copies available
@@ -348,6 +351,19 @@ function checkLoanBookAction(bookId) {
             });
         }
     });  
+}
+
+function loadIsbnImage(isbnArray, elem, counter) { 
+    if(counter >= isbnArray.length) return;
+    let img = new Image();
+    let imageSrc = 'images/isbn/i' + isbnArray[counter].isbn + '.jpg';
+    img.onload = function(){ 
+        elem.attr('src', imageSrc);
+    }
+    img.onerror = function(){
+        loadIsbnImage(isbnArray, elem, counter++);
+    };
+    img.src = imageSrc;   
 }
 
 function loanOpenNext() {
