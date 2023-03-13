@@ -1,13 +1,16 @@
 
+let isSimple = false;
+
 $(function() {
     doLoad('init.php', {}, function(success, data){
       if(success) {
         setDebug(debug.debug);
-        loadConfigItems();
-        loadPage(function(){
-          getLoan();        
-          getUsers();        
-          showLoan();  
+        loadConfigItems(function(){
+          loadPage(function(){
+            getLoan();        
+            getUsers();        
+            showLoan();  
+          });
         });
         $(document).on('select2:open', () => {
           if (!event.target.multiple) { 

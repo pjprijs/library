@@ -207,6 +207,7 @@ class Library implements LibraryInterface {
             while($row = $result->fetch_assoc()) {
                 $itemArray[$row["order"]]["id"] = $row["id"];
                 $itemArray[$row["order"]]["name"] = $row["name"];
+                $itemArray[$row["order"]]["text"] = $row["name"];
                 $itemArray[$row["order"]]["active"] = $row["active"];
             }
             $result->close();
@@ -328,14 +329,7 @@ class Library implements LibraryInterface {
                 $user = new User();
                 $user->init((int)$row["id"]);
                 $index = count($data);
-                $data[$index]["id"] = $user->getId();
-                $data[$index]["fullname"] = $user->getFullname();
-                $data[$index]["name"] = $user->getName();
-                $data[$index]["prefix"] = $user->getPrefix();
-                $data[$index]["surname"] = $user->getSurname();
-                $data[$index]["schoolyear"] = $user->getSchoolyear();
-                $data[$index]["groupname"] = $user->getGroupname();
-
+                $data[$index] = $user->toArray();
             }
         }
         return $data; 
@@ -358,7 +352,7 @@ class Library implements LibraryInterface {
 
     private function getLoanedBooksData($userId, $open, $start, $limit) {
         global $mysqli;
-        $sql = "SELECT l.id AS loan, l.book, DATE_FORMAT(l.startdate, '%e %M \'%y') AS start_date, DATE_FORMAT(l.enddate, '%e %M \'%y') AS end_date, l.enddate 
+        $sql = "SELECT l.id AS loan, l.book, DATE_FORMAT(l.startdate, '%Y-%m-%d') AS startdate, DATE_FORMAT(l.startdate, '%e %M \'%y') AS start_date, DATE_FORMAT(l.enddate, '%e %M \'%y') AS end_date, l.enddate 
             FROM loan l
             WHERE l.user = " . $this->escapeSql($userId) . "
             AND l.enddate " . ($open === "true" ? "" : " !") . "= '0000-00-00 00:00:00'
@@ -369,7 +363,7 @@ class Library implements LibraryInterface {
         $returnValue = array();
         if($result = $mysqli->query($sql)) {
             while($row = $result->fetch_assoc()) {
-                $book = (new Book)->init((int) $row["book"], true, false);
+                $book = (new Book)->init((int) $row["book"], true, true);
                 $returnValue[count($returnValue)] = array_merge($row, $book->toArray());
             }
             $result->close();

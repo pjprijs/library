@@ -76,6 +76,7 @@ let txtFirstname = 'voornaam';
 let txtLastname = 'achternaam';
 let txtPrefix = 'tussenvoegsel';
 let txtGroup = 'groep';
+let txtAllGroups = 'Alle groepen';
 
 //php err msg
 let phpErrMsg = new Array();

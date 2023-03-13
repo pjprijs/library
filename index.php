@@ -38,6 +38,7 @@ if(isset($_COOKIE['navbarStyle'])) $navbarStyle = $_COOKIE['navbarStyle'];
     <script type='text/javascript' src='scripts/loan.js?rnd=<?php echo rand();?>'></script>
     <script type='text/javascript' src='scripts/books.js?rnd=<?php echo rand();?>'></script>
     <script type='text/javascript' src='scripts/users.js?rnd=<?php echo rand();?>'></script>
+    <script type='text/javascript' src='scripts/reports.js?rnd=<?php echo rand();?>'></script>
     <script type='text/javascript' src='scripts/config.js?rnd=<?php echo rand();?>'></script>
 
     <link rel=stylesheet type='text/css' href='css/main.css?rnd=<?php echo rand();?>' title='style'/>
@@ -66,6 +67,9 @@ if(isset($_COOKIE['navbarStyle'])) $navbarStyle = $_COOKIE['navbarStyle'];
             </li>
             <li class="nav-item">
               <a class="nav-link menu-button menu-button-users" href="#" onClick="showUsers();" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Users</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link menu-button menu-button-reports" href="#" onClick="showReports();" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Reports</a>
             </li>
             <li class="nav-item debug">
               <a class="nav-link menu-button menu-button-stats" href="#" onClick="showStats();" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Stats</a>
@@ -255,6 +259,10 @@ if(isset($_COOKIE['navbarStyle'])) $navbarStyle = $_COOKIE['navbarStyle'];
           <div class="page page-users">
             <?php include("html/users.html"); ?>
           </div><!-- / page users -->
+
+          <div class="page page-reports">
+            <?php include("html/reports.html"); ?>
+          </div><!-- / page reports -->
 
 
           <div class="page page-stats">

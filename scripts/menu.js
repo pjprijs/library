@@ -42,6 +42,16 @@ function showUsers() {
   }
 }
 
+function showReports() {
+  if($('.page-reports').is(':visible')) {
+  } else {
+    resetMenu();
+    $('.menu-button-reports').addClass('active');
+    initReports();
+    $('.page-reports').show();
+  }
+}
+
 function showStats() {
   if($('.page-stats').is(':visible')) {
   } else {

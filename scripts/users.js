@@ -50,6 +50,46 @@ function makeUserOverview(allData) {
     if(data.length >= maxUsersPerPage) {
         $('.user-overview-next').removeClass('disabled');
     }
+    let groupSelectOptions = yearSelectOptions = '';
+    for(i=0; i<groupArray.length; i++) {
+        if(groupArray[i].active == '1') {
+            groupSelectOptions += '<option value=' + groupArray[i].id + '>' + groupArray[i].name + '</option>\n';
+        }
+    }
+    for(i=1; i<10; i++) {
+        yearSelectOptions += '<option value=' + i + '>Jaar: ' + i + '</option>\n';
+    }
+    $('.users-list').append(
+        $('<tr>').append(
+            $('<td colspan="3">').append(
+                $('<div class="row">').append(
+                    $('<div class="col-md-2">').append(
+                        $('<input type="text" class="form-control users-list-new-name" placeholder="' + txtFirstname + '" value=""/>')
+                    )
+                ).append(
+                    $('<div class="col-md-1">').append(
+                        $('<input type="text" class="form-control users-list-new-prefix" placeholder="' + txtPrefix + '" value=""/>')
+                    )
+                ).append(
+                    $('<div class="col-md-3">').append(
+                        $('<input type="text" class="form-control users-list-new-surname" placeholder="' + txtLastname + '" value=""/>')
+                    )
+                ).append(
+                    $('<div class="col-md-2">').append(
+                        $('<select class="form-control users-list-new-group">').append(groupSelectOptions)
+                    )
+                ).append(
+                    $('<div class="col-md-2">').append(
+                        $('<select class="form-control users-list-new-year">').append(yearSelectOptions)
+                    )
+                ).append(
+                    $('<div class="col-md-2">').append(
+                        $('<button type="button" class="btn btn-primary" onclick="addUserInfo()">' + txtAdd + '</button>')
+                    )
+                )
+            )
+        )
+    );
     for(i=0; i<data.length; i++) {
         $('.users-list').append(
             $('<tr>').append(
@@ -57,40 +97,33 @@ function makeUserOverview(allData) {
                     $('<span class="users-list-' + data[i].id + '-text">' + data[i].fullname + '</span>')
                 ).append(
                     $('<div class="users-list-' + data[i].id + '-edit hidden">').append(
-                        $('<div class="input-group">').append(
-                            $('<div class="input-group-prepend">').append(
-                                $('<div class="input-group-text">' + txtFirstname + ':</div>')
-                            )
-                        ).append(
-                            $('<input width="10" type="text" class="form-control users-list-' + data[i].id + '-name" placeholder="' + txtFirstname + '" value="' + data[i].name + '"/>')
-                        )
+                        $('<input type="text" class="form-control users-list-' + data[i].id + '-name" placeholder="' + txtFirstname + '" value="' + data[i].name + '"/>')
                     ).append(
-                        $('<div class="input-group">').append(
-                            $('<div class="input-group-prepend">').append(
-                                $('<div class="input-group-text">' + txtPrefix + ':</div>')
-                            )
-                        ).append(
-                            $('<input type="text" class="form-control users-list-' + data[i].id + '-prefix" placeholder="' + txtPrefix + '" value="' + data[i].prefix + '"/>')
-                        )
+                        $('<input type="text" class="form-control users-list-' + data[i].id + '-prefix" placeholder="' + txtPrefix + '" value="' + data[i].prefix + '"/>')
                     ).append(
-                        $('<div class="input-group">').append(
-                            $('<div class="input-group-prepend">').append(
-                                $('<div class="input-group-text">' + txtLastname + ':</div>')
-                            )
-                        ).append(
-                            $('<input type="text" class="form-control users-list-' + data[i].id + '-surname" placeholder="' + txtLastname + '" value="' + data[i].surname + '"/>')
-                        )
+                        $('<input type="text" class="form-control users-list-' + data[i].id + '-surname" placeholder="' + txtLastname + '" value="' + data[i].surname + '"/>')
                     )
                 )
-            ).append(
-                $('<td>' + txtGroup + ' ' + (data[i].groupname != '' ? data[i].groupname : data[i].schoolyear) + '</td>')
             ).append(
                 $('<td>').append(
-                    $('<div class="users-list-' + data[i].id + '-icon">').append(
-                        $('<i class="fas fa-pen clickable" onclick="userEdit(' + data[i].id + ')" data-toggle="tooltip" title="' + txtEdit + '"></i>')
+                    $('<span class="users-list-' + data[i].id + '-text">' + txtGroup + ' ' + (data[i].groupname != '' ? data[i].groupname : data[i].schoolyear) + '</span>')
+                ).append(
+                    $('<div class="users-list-' + data[i].id + '-edit hidden">').append(
+                        $('<select class="form-control users-list-' + data[i].id + '-group">').append(groupSelectOptions)
+                    ).append(
+                        $('<select class="form-control users-list-' + data[i].id + '-year">').append(yearSelectOptions)
                     )
                 )
-            ));
+            ).append(
+                $('<td style="text-align: right;">').append(
+                    $('<div class="users-list-' + data[i].id + '-icon">').append(
+                        $('<i class="fas fa-pen clickable mx-3" onclick="userEdit(' + data[i].id + ')" data-toggle="tooltip" title="' + txtEdit + '"></i>')
+                    )
+                )
+            )
+        );
+        $('.users-list-' + data[i].id + '-group').val(data[i].groupId);
+        $('.users-list-' + data[i].id + '-year').val(data[i].schoolyear);
     }
 }
 
@@ -100,7 +133,7 @@ function userEdit(id) {
     $('.users-list-' + id + '-text').hide();
     $('.users-list-' + id + '-edit').show();
     $('.users-list-' + id + '-icon').html(
-        $('<button type="button" class="btn btn-success mx-3">' + txtSave + '</button>')
+        $('<button type="button" class="btn btn-success mx-3" onclick="setUserInfo(' + id + ')">' + txtSave + '</button>')
     ).append(
         $('<button type="button" class="btn btn-danger" onclick="userEdit(' + id + ')">' + txtCancel + '</button>')
     );
@@ -108,8 +141,36 @@ function userEdit(id) {
     $('.users-list-' + id + '-edit').hide();
     $('.users-list-' + id + '-text').show();
     $('.users-list-' + id + '-icon').html(
-        $('<i class="fas fa-pen clickable" onclick="userEdit(' + id + ')" data-toggle="tooltip" title="' + txtEdit + '"></i>')
+        $('<i class="fas fa-pen clickable  mx-3" onclick="userEdit(' + id + ')" data-toggle="tooltip" title="' + txtEdit + '"></i>')
     );
-
   }
+}
+
+function setUserInfo(id) {
+    doLoad('setUserInfo.php', {
+        id: id,
+        name: $('.users-list-' + id + '-name').val(),
+        prefix: $('.users-list-' + id + '-prefix').val(),
+        surname: $('.users-list-' + id + '-surname').val(),
+        group: $('.users-list-' + id + '-group').val(),
+        year: $('.users-list-' + id + '-year').val()
+    }, function(success, data){
+        if(success) {
+            getUsers();
+        }
+    });
+}
+
+function addUserInfo(id) {
+    doLoad('addUserInfo.php', {
+        name: $('.users-list-new-name').val(),
+        prefix: $('.users-list-new-prefix').val(),
+        surname: $('.users-list-new-surname').val(),
+        group: $('.users-list-new-group').val(),
+        year: $('.users-list-new-year').val()
+    }, function(success, data){
+        if(success) {
+            getUsers();
+        }
+    });
 }
