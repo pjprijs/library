@@ -41,12 +41,15 @@ function setDebug(value) {
   setCookie('debug', debug.debug, 180);
 }
 
-function loadConfigItems() {
-    loadConfigItem('avi');
-    loadConfigItem('group');
+function loadConfigItems(callback) {
+    loadConfigItem('avi', function() {
+        loadConfigItem('group', function(){
+            callback();
+        });
+    });    
 }
 
-function loadConfigItem(item) {
+function loadConfigItem(item, callback) {
     doLoad('getItem.php', {
         table: item
     }, function(success, data){
@@ -54,6 +57,7 @@ function loadConfigItem(item) {
             eval(data.item + 'Array = data.data;');
             initConfigItem(data.item);
         }
+        callback();
     });
 }
 function initConfigItem(item) {

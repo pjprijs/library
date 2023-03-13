@@ -47,6 +47,7 @@ function showReports() {
   } else {
     resetMenu();
     $('.menu-button-reports').addClass('active');
+    initReports();
     $('.page-reports').show();
   }
 }
