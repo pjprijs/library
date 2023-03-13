@@ -29,8 +29,10 @@ $(document).on('keydown', function(event){
           if(tmpIsbn.length == 13 && tmpIsbn.substring(0,3) == '978') {
             checkIsbnAction(tmpIsbn);
           } else {
-            playNotFound();
-            showErrorMsg(phpErrMsg[16]);
+            //console.log('tmpIsbn: ' + tmpIsbn);
+            //playNotFound();
+            //showErrorMsg(phpErrMsg[16]);
+            checkIsbnAction(tmpIsbn);
           }
         }
         keyBuffer = new Array();

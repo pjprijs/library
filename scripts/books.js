@@ -586,7 +586,7 @@ function showBookHistory(allData) {
             if(data[i].enddate == '1111-11-11 11:11:11') endDate = txtMissing;
             if(data[i].enddate == '0000-00-00 00:00:00') {
                 endDate = '-';
-                returnButton = $('<button type="button" class="btn btn-outline-secondary" onclick="returnLoanedBook(' + data[i].id + ', \'' + $('.book-details-title').html() + '\', function(){ getBookHistory(); });">' + txtReturn + '</button>')
+                returnButton = $('<button type="button" class="btn btn-outline-secondary" onclick="returnLoanedBook(' + data[i].id + ',' + data[i].book + ', \'' + $('.book-details-title').html() + '\', function(){ getBookHistory(); });">' + txtReturn + '</button>')
                 missingButton = $('<button type="button" class="btn btn-outline-danger" onclick="missingLoanedBook(' + data[i].id + ', \'' + $('.book-details-title').html() + '\', function(){ getBookHistory(); });">' + txtMissing + '</button>');
             }
             $('.books-details-history').append($('<tr>').append(

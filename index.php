@@ -80,6 +80,7 @@ if(isset($_COOKIE['navbarStyle'])) $navbarStyle = $_COOKIE['navbarStyle'];
                 <li><a class="dropdown-item txt-read-level" href="#" onClick="showConfig('avi');">avi</a></li>
                 <li><a class="dropdown-item txt-group" href="#" onClick="showConfig('group');">group</a></li>
                 <li><a class="dropdown-item txt-author" href="#" onClick="showConfig('author');">author</a></li>
+                <li><a class="dropdown-item txt-scanner" href="#" onClick="showConfig('scanner');">scanner</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><i class="fas fa-palette"></i> style</li>
                 <li><a class="dropdown-item menu-style" href="#" onClick="toggleStyle('sandstone');">standaard</a></li>
@@ -260,11 +261,6 @@ if(isset($_COOKIE['navbarStyle'])) $navbarStyle = $_COOKIE['navbarStyle'];
             <?php include("html/users.html"); ?>
           </div><!-- / page users -->
 
-          <div class="page page-reports">
-            <?php include("html/reports.html"); ?>
-          </div><!-- / page reports -->
-
-
           <div class="page page-stats">
             <?php include("html/stats.html"); ?>
           </div><!-- / page stats -->
@@ -272,6 +268,10 @@ if(isset($_COOKIE['navbarStyle'])) $navbarStyle = $_COOKIE['navbarStyle'];
           <div class="page page-config">
             <?php include("html/config.html"); ?>
           </div><!-- / page config -->
+
+          <div class="page page-reports">
+            <?php include("html/reports.html"); ?>
+          </div><!-- / page reports -->
 
           <br/>
 

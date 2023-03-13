@@ -189,17 +189,16 @@ function showLoanedBooks(allData) {
         $('.loan-user-books').show();        
         for(i=0; i<data.length; i++) {
             loanedBooksArray[i] = parseInt(data[i].id);
-            console.log(data[i]);
             $('.loan-user-books-table').append($('<tr>').append(
                 $('<td>').append(
                     $('<img class="loan-book-image-' + data[i].id + '" src="' + isbnImage + '" align="left" width="75"/>')
                 )
             ).append(
-                $('<td class="loan-user-books-id-' + data[i].id + ' clickable" startDate="' + data[i].startdate + '" loanId="' + data[i].loan + '" onclick="showBooks(); getBookDetails(' + data[i].id + ', function(){ showLoan(); })">').append($('<span>' + data[i].title + '</span>'))
+                $('<td class="loan-user-books-id-' + data[i].id + ' clickable" startDate="' + data[i].startdate + '" loanId="' + data[i].loan + '" onclick="showBooks(); getBookDetails(' + data[i].id + ', function(){ showLoan(); })">').append($('<span>' + data[i].fulltitle + '</span>'))
             ).append(
                 $('<td>').append($('<span>' + data[i].start_date + '</span>'))
             ).append(
-                $('<td width="100">').append($('<button type="button" class="btn btn-outline-secondary" onclick="returnLoanedBook(' + data[i].id + ', \'' + data[i].title.replaceAll('\'', '\\\'') + '\', function(){ getLoanedBooks(); });">' + txtReturn + '</button>'))
+                $('<td width="100">').append($('<button type="button" class="btn btn-outline-secondary" onclick="returnLoanedBook(' + data[i].loan + ',' + data[i].id + ', \'' + data[i].title.replaceAll('\'', '\\\'') + '\', function(){ getLoanedBooks(); });">' + txtReturn + '</button>'))
             ).append(
                 $('<td width="100">').append($('<button type="button" class="btn btn-outline-danger" onclick="missingLoanedBook(' + data[i].loan + ', \'' + data[i].title.replaceAll('\'', '\\\'') + '\', function(){ getLoanedBooks(); });">' + txtMissing + '</button>'))
             ));
@@ -236,7 +235,7 @@ function showLoanedBooksHistory(allData) {
             let endDate = data[i].end_date;
             if(data[i].enddate == '1111-11-11 11:11:11') endDate = txtMissing;
             $('.loan-user-books-history-table').append($('<tr>').append(
-                $('<td class="clickable" onclick="showBooks(); getBookDetails(' + data[i].id + ', function(){ showLoan(); })">').append($('<span>' + data[i].title + '</span>'))
+                $('<td class="clickable" onclick="showBooks(); getBookDetails(' + data[i].id + ', function(){ showLoan(); })">').append($('<span>' + data[i].fulltitle + '</span>'))
             ).append(
                 $('<td>').append($('<span>' + data[i].start_date + '</span>'))
             ).append(
@@ -254,14 +253,16 @@ function setLoanedBook(title) {
         bookId: selectedBookId
     }, function(success, data){
         if(success) {
-            showSuccessMsg(title + ' ' + txtLent + '.');
+            let tmpTitle = '';
+            if(title != undefined) tmpTitle = title + ' ';
+            showSuccessMsg(tmpTitle + txtLent + '.');
             showNewLoanBook();
             getLoanedBooksOpen();
         }
     });
 }
 
-function returnLoanedBook(book, title, callback) {
+function returnLoanedBook(loanId, book, title, callback) {
     const d = new Date();
     let day = d.getDate();
     let month = d.getMonth()+1;
@@ -273,7 +274,7 @@ function returnLoanedBook(book, title, callback) {
             return false;
         }
     }
-    loanId = $('.loan-user-books-id-' + book).attr('loanId');
+    //loanId = $('.loan-user-books-id-' + book).attr('loanId');
 
     doLoad('returnLoanedBook.php', {
         loanId: loanId
@@ -343,7 +344,8 @@ function checkLoanBookAction(bookId) {
     getBookTitle(bookId, function(data){
         if(loanedBooksArray.includes(parseInt(data.bookId))) {
             //Book is returned
-            returnLoanedBook(data.bookId, data.title, function(){
+            let loanId = $('.loan-user-books-id-' + book).attr('loanId');
+            returnLoanedBook(loanId, data.bookId, data.title, function(){
                 playFound();
                 getLoanedBooks();
             });    
@@ -352,17 +354,6 @@ function checkLoanBookAction(bookId) {
             checkBookAvailable(data.bookId, function(amountData){
                 playFound();
                 if(amountData.loaned < amountData.total) {
-                    /*
-                    defaultModalFunction = function(data){
-                        setLoanedBook();
-                    };
-                    defaultModalExitFunction = function(){
-                        selectedBookId = null;
-                    }
-                    let isbnImage = 'images/isbn/unknown.jpg';
-                    setModal(txtLoan, '<img class="book-details-image-' + data.bookId + '" src="' + isbnImage + '" align="left" width="75"/>' + data.title + ' ' + txtLoan + '?', txtLoan, true);
-                    loadIsbnImage(data.isbn, $('.book-details-image-' + data.bookId), 0);
-                    */
                     setLoanedBook(data.title);
                 } else {
                     playNotFound();

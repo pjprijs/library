@@ -142,3 +142,158 @@
         </div><!-- /col-md-4-->
     </div><!-- /row-->
 </div>
+
+
+
+<!-- Config Scanner -->
+<div class="page-config-subpage page-config-scanner">
+  <div class="row">
+    <div class="col-sm-3">
+      <div class="card mb-3">
+        <div class="card-header">
+          <span class="title">Config Timeout</span>
+        </div>
+        <div class="card-body padded">
+          <div id="qr-scanner-timeout"></div>
+          <script type="text/javascript">
+            var qrcode = new QRCode(document.getElementById("qr-scanner-timeout"), {
+              text: "%%ALLTIMSET",
+              width: 100,
+              height: 100,
+              colorDark : "#5868bf",
+              colorLight : "#ffffff",
+              correctLevel : QRCode.CorrectLevel.H
+            });
+          </script>
+        </div>
+      </div><!-- /card -->
+    </div><!-- /col-sm-3 -->
+
+    <div class="col-sm-3">
+      <div class="card mb-3">
+        <div class="card-header">
+          <span class="title">60 sec.</span>
+        </div>
+        <div class="card-body padded">
+          <div id="qr-scanner-timeout-60"></div>
+          <script type="text/javascript">
+            var qrcode = new QRCode(document.getElementById("qr-scanner-timeout-60"), {
+              text: "%%ALLTIM02",
+              width: 100,
+              height: 100,
+              colorDark : "#5868bf",
+              colorLight : "#ffffff",
+              correctLevel : QRCode.CorrectLevel.H
+            });
+          </script>
+        </div>
+      </div><!-- /card -->
+    </div><!-- /col-sm-3 -->
+
+    <div class="col-sm-3">
+      <div class="card mb-3">
+        <div class="card-header">
+          <span class="title">10 min.</span>
+        </div>
+        <div class="card-body padded">
+          <div id="qr-scanner-timeout-10m"></div>
+          <script type="text/javascript">
+            var qrcode = new QRCode(document.getElementById("qr-scanner-timeout-10m"), {
+              text: "%%ALLTIM05",
+              width: 100,
+              height: 100,
+              colorDark : "#5868bf",
+              colorLight : "#ffffff",
+              correctLevel : QRCode.CorrectLevel.H
+            });
+          </script>
+        </div>
+      </div><!-- /card -->
+    </div><!-- /col-sm-3 -->
+
+    <div class="col-sm-3">
+      <div class="card mb-3">
+        <div class="card-header">
+          <span class="title">No timeout</span>
+        </div>
+        <div class="card-body padded">
+          <div id="qr-scanner-timeout-disable"></div>
+          <script type="text/javascript">
+            var qrcode = new QRCode(document.getElementById("qr-scanner-timeout-disable"), {
+              text: "%%ALL*TIDIS",
+              width: 100,
+              height: 100,
+              colorDark : "#5868bf",
+              colorLight : "#ffffff",
+              correctLevel : QRCode.CorrectLevel.H
+            });
+          </script>
+        </div>
+      </div><!-- /card -->
+    </div><!-- /col-sm-3 -->
+
+    <div class="col-sm-3">
+      <div class="card mb-3">
+        <div class="card-header">
+          <span class="title">Beep on</span>
+        </div>
+        <div class="card-body padded">
+          <div id="qr-scanner-beep-on"></div>
+          <script type="text/javascript">
+            var qrcode = new QRCode(document.getElementById("qr-scanner-beep-on"), {
+              text: "$Set#Code^44",
+              width: 100,
+              height: 100,
+              colorDark : "#FFAA00",
+              colorLight : "#ffffff",
+              correctLevel : QRCode.CorrectLevel.H
+            });
+          </script>
+        </div>
+      </div><!-- /card -->
+    </div><!-- /col-sm-3 -->
+
+    <div class="col-sm-3">
+      <div class="card mb-3">
+        <div class="card-header">
+          <span class="title">Beep off</span>
+        </div>
+        <div class="card-body padded">
+          <div id="qr-scanner-beep-off"></div>
+          <script type="text/javascript">
+            var qrcode = new QRCode(document.getElementById("qr-scanner-beep-off"), {
+              text: "$Set#Code^45",
+              width: 100,
+              height: 100,
+              colorDark : "#FFAA00",
+              colorLight : "#ffffff",
+              correctLevel : QRCode.CorrectLevel.H
+            });
+          </script>
+        </div>
+      </div><!-- /card -->
+    </div><!-- /col-sm-3 -->
+
+    <div class="col-sm-3">
+      <div class="card mb-3">
+        <div class="card-header">
+          <span class="title">Set default end char</span>
+        </div>
+        <div class="card-body padded">
+          <div id="qr-scanner-end-char"></div>
+          <script type="text/javascript">
+            var qrcode = new QRCode(document.getElementById("qr-scanner-end-char"), {
+              text: "$Set#Code^45",
+              width: 100,
+              height: 100,
+              colorDark : "#00AA00",
+              colorLight : "#ffffff",
+              correctLevel : QRCode.CorrectLevel.H
+            });
+          </script>
+        </div>
+      </div><!-- /card -->
+    </div><!-- /col-sm-3 -->
+
+  </div><!-- /row-->
+</div>
