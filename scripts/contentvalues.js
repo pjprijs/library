@@ -57,6 +57,7 @@ let txtSubtitle = 'bijtitel'
 let txtAuthor = 'auteur';
 let txtBook = 'boek';
 let txtBooks = 'boeken';
+let txtDays = 'dagen';
 let txtPart = 'deel';
 let txtReadLevel = 'AVI';
 let txtPublication = 'uitgave';
@@ -120,6 +121,7 @@ $(function() {
     $('.txt-merge').html(txtMerge);
     $('.txt-book').html(txtBook);
     $('.txt-books').html(txtBooks);
+    $('.txt-days').html(txtDays);
     $('.txt-publication').html(txtPublication);
 
     $('.txt-loan').html(txtLoan);

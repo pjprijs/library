@@ -8,6 +8,7 @@ try {
 	(new Library)->setLoanedBook($_REQUEST["userId"],$_REQUEST["bookId"]);
 	$result["error"] = 0;
 	$result["errorMsg"] = "";
+	$result["data"] = $_REQUEST["title"];
 } catch(Exception $e) {
 	$result["error"] = 11;
 	$result["errorMsg"] = $e->getMessage();

@@ -5,7 +5,9 @@ include_once("../php/prepend.php");
 echo "\n/*\n";
 
 try {
-	$result["data"] = (new Library)->getUsers($_REQUEST["search"],$_REQUEST["page"],$_REQUEST["limit"],$_REQUEST["orderField"],$_REQUEST["orderDir"]);
+	$tmpGroups = $_REQUEST["selectedGroups"];
+	if($tmpGroups == null) $tmpGroups = array();
+	$result["data"] = (new Library)->getTopXLoaned($tmpGroups, $_REQUEST["limit"]);
 	$result["error"] = 0;
 	$result["errorMsg"] = "";
 } catch(Exception $e) {

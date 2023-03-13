@@ -2,8 +2,118 @@
     <div class="card-body">
         <div class='row'>
             <div class='col-md-12 col-lg-6'>
-                <div class="report-select-group"/>    
+                <div class="report-select-group"></div>
             </div>            
         </div>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <i class="fas fa-arrow-turn-down"></i> Ingeleverd, nog niet geruild:
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="txt-name">name</th>
+                        </tr>
+                    </thead>
+                    <tbody class="reports-user-book-notloaned">
+                    </tbody>
+                </table>
+            </div> <!-- /card body -->
+        </div> <!-- /card -->
+    </div> <!-- /col-md-4 -->
+
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <i class="fas fa-arrow-turn-up"></i> Geruild niet ingeleverd:
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="txt-name">name</th>
+                        </tr>
+                    </thead>
+                    <tbody class="reports-user-book-notsubmitted">
+                    </tbody>
+                </table>
+            </div> <!-- /card body -->
+        </div> <!-- /card -->
+    </div> <!-- /col-md-4 -->
+
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <i class="fas fa-xmark"></i> Geen boek:
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="txt-name">name</th>
+                        </tr>
+                    </thead>
+                    <tbody class="reports-user-book-nobook">
+                    </tbody>
+                </table>
+            </div> <!-- /card body -->
+        </div> <!-- /card -->
+    </div> <!-- /col-md-4 -->
+
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <i class="fas fa-rotate"></i> Geruild en ingeleverd:
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="txt-name">name</th>
+                        </tr>
+                    </thead>
+                    <tbody class="reports-user-book-done">
+                    </tbody>
+                </table>
+            </div> <!-- /card body -->
+        </div> <!-- /card -->
+    </div> <!-- /col-md-4 -->
+
+</div> <!-- /row-->
+<br/>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                Hoe lang een boek in bezit:
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="txt-name">name</th>
+                            <th class="txt-book">book</th>
+                            <th class="txt-days">days</th>
+                        </tr>
+                    </thead>
+                    <tbody class="reports-user-book-loaned">
+                    </tbody>
+                </table>
+            </div> <!-- /card body -->
+        </div> <!-- /card -->
+    </div> <!-- /col-md-6 -->
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                Top 20 boeken:
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="txt-book">book</th>
+                            <th class="txt-days">days</th>
+                        </tr>
+                    </thead>
+                    <tbody class="reports-top-x-loaned">
+                    </tbody>
+                </table>
+            </div> <!-- /card body -->
+        </div> <!-- /card -->
+    </div> <!-- /col-md-6 -->
+</div> <!-- /row-->

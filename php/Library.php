@@ -35,6 +35,109 @@ class Library implements LibraryInterface {
         return $returnVar;
     }
 
+    public function getUserForToday($groupArray, $submitted = true, $loaned = false, $orderField = "g.order, u.name", $orderDir = 0) {
+        $submitted = filter_var($submitted, FILTER_VALIDATE_BOOLEAN);
+        $loaned = filter_var($loaned, FILTER_VALIDATE_BOOLEAN);
+        $today = date("Y-m-d");
+        //default = submitted not loaned
+        $where = " WHERE u.id IN(SELECT DISTINCT l.user FROM `loan` l WHERE l.enddate >= '" . $today . " 0:00:00' AND l.enddate <= '" . $today . " 23:59:59')
+            AND u.id NOT IN(SELECT DISTINCT l.user FROM `loan` l WHERE l.startdate >= '" . $today . " 0:00:00' AND l.startdate <= '" . $today . " 23:59:59')
+        ";
+        if($submitted && $loaned) {
+            $where = " WHERE u.id IN(SELECT DISTINCT l.user FROM `loan` l WHERE l.enddate >= '" . $today . " 0:00:00' AND l.enddate <= '" . $today . " 23:59:59')
+                AND u.id IN(SELECT DISTINCT l.user FROM `loan` l WHERE l.startdate >= '" . $today . " 0:00:00' AND l.startdate <= '" . $today . " 23:59:59')
+            ";
+        } else if(!$submitted && $loaned){
+            $where = " WHERE u.id NOT IN(SELECT DISTINCT l.user FROM `loan` l WHERE l.enddate >= '" . $today . " 0:00:00' AND l.enddate <= '" . $today . " 23:59:59')
+                AND u.id IN(SELECT DISTINCT l.user FROM `loan` l WHERE l.startdate >= '" . $today . " 0:00:00' AND l.startdate <= '" . $today . " 23:59:59')
+            ";
+        } else if(!$submitted && !$loaned) {
+            $where = " WHERE g.active = 1 AND u.id NOT IN (SELECT DISTINCT l.user FROM `loan` l WHERE enddate = '000-00-00 00:00:00')
+            AND u.id NOT IN(SELECT DISTINCT l.user FROM `loan` l WHERE l.enddate >= '" . $today . " 0:00:00' AND l.enddate <= '" . $today . " 23:59:59')
+            ";
+        }
+        if(count($groupArray) > 0) {
+            $where .= " AND us.group IN(-1";
+            foreach($groupArray as $value) {
+                $where .= "," . $value;
+            }
+            $where .= ")";
+        }
+        $totalResult = $this->getUsersTotalCount($where);
+
+        $data = array();
+        if($totalResult > 0) { $data = $this->getUsersData($where, 0, 0, $orderField, $orderDir); }
+        $returnVar["results"] = $data;
+        $returnVar["pagination"]["more"] = ($totalResult > $limit);
+        $returnVar["amount"] = $totalResult;
+        return $returnVar;
+    }
+
+    public function getUserBookLoaned($groupArray) {
+        global $mysqli;
+        $where = "";
+        if(count($groupArray) > 0) {
+            $where .= " AND us.group IN(-1";
+            foreach($groupArray as $value) {
+                $where .= "," . $value;
+            }
+            $where .= ")";
+        }
+        $sql = "SELECT l.user, l.book, DATEDIFF(NOW(), l.startdate) AS days
+                FROM `loan` l
+                INNER JOIN user_schoolyear us ON l.user = us.user
+                WHERE 1=1 " . $where . " 
+                AND enddate = '0000-00-00 00:00:00'  
+                ORDER BY l.startdate ASC
+                ";
+
+        $checkArray = $data = array();
+        if($result = $mysqli->query($sql)) {
+            while($row = $result->fetch_assoc()) {
+                if(!in_array($row["user"], $checkArray)) {
+                    $checkArray[] = $row["user"];
+                    $user = new User();
+                    $user->init((int)$row["user"]);
+                    $book = new Book();
+                    $book->init((int)$row["book"], true, false);
+                    $index = count($data);
+                    $data[$index]["user"] = $user->toArray();
+                    $data[$index]["book"] = $book->toArray();
+                    $data[$index]["days"] = $row["days"];
+                }
+            }
+        }
+        return $data; 
+    }
+
+    public function getTopXLoaned($groupArray, $limit) {
+        global $mysqli;
+        $where = "";
+        if(count($groupArray) > 0) {
+            $where .= " AND l.user IN(SELECT DISTINCT user FROM `user_schoolyear` us WHERE us.group IN(-1";
+            foreach($groupArray as $value) {
+                $where .= "," . $value;
+            }
+            $where .= "))";
+        }
+        $sql = "SELECT l.book, COUNT(1) AS amount FROM loan l 
+        WHERE l.startdate >= DATE_SUB(NOW(),INTERVAL 1 YEAR) " . $where . "
+        GROUP BY l.book
+        ORDER BY amount DESC
+        LIMIT " . $limit;
+
+        if($result = $mysqli->query($sql)) {
+            while($row = $result->fetch_assoc()) {
+                $book = new Book();
+                $book->init((int)$row["book"], true, false);
+                $index = count($data);
+                $data[$index]["book"] = $book->toArray();
+                $data[$index]["amount"] = $row["amount"];
+            }
+        }
+        return $data; 
+    }
+
     public function getLoanedBooks($userId, $open = "true", $page = 1, $limit = 25) {
         $start = ($page-1)*$limit;
         $amountOfLoans = $this->getLoanedBooksTotalCount($userId, $open);
@@ -298,7 +401,11 @@ class Library implements LibraryInterface {
     private function getUsersTotalCount($where) {
         global $mysqli;
         $totalResult = 0;
-        $sql = "SELECT COUNT(1) as amount FROM user u" . $where;
+        $sql = "SELECT COUNT(1) as amount 
+                FROM user u
+                INNER JOIN user_schoolyear us ON u.id = us.user
+                INNER JOIN `group` g ON us.group = g.id
+                " . $where;
         if($result = $mysqli->query($sql)) {
             if($row = $result->fetch_assoc()) {
                 $totalResult = $row["amount"];
@@ -313,6 +420,7 @@ class Library implements LibraryInterface {
         $start = ((int)$page-1) * $limit;
         $sql = "SELECT u.id FROM user u
             LEFT JOIN user_schoolyear us ON u.id = us.user
+            LEFT JOIN `group` g ON us.group = g.id
             LEFT JOIN schoolyear s ON us.schoolyear = s.id
             " . $where;
         $sql .= " ORDER BY " . $orderField;
@@ -321,7 +429,7 @@ class Library implements LibraryInterface {
         } else {
             $sql .= " DESC";
         }
-        $sql .= " LIMIT " . $start . ", " . $limit;
+        if($limit != 0) $sql .= " LIMIT " . $start . ", " . $limit;
 
         //RETREIVE DATA
         if($result = $mysqli->query($sql)) {
