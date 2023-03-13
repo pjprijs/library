@@ -89,6 +89,7 @@ if(isset($_COOKIE['navbarStyle'])) $navbarStyle = $_COOKIE['navbarStyle'];
                 <li><a class="dropdown-item menu-style" href="#" onClick="toggleStyle('sketchy');">getekend</a></li>
                 <li><a class="dropdown-item menu-style" href="#" onClick="toggleStyle('solar');">donker</a></li>
                 <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item menu-dbexport" href="#" onClick="dbExport();">export database</a></li>
                 <li><a class="dropdown-item menu-debug" href="#" onClick="toggleDebug();">debug is off</a></li>
               </ul>
             </li>
