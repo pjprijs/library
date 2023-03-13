@@ -186,3 +186,9 @@ function closeConfigItem(item, id) {
     $('.config-item-' + item + '-name-save-' + id).hide();
     $('.config-item-' + item + '-name-input-' + id + ' input').val($('.config-item-' + item + '-name-text-' + id).html());
 }
+
+function dbExport() {
+    var win = window.open("", "Export database", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=400,height=100,top="+(screen.height-400)+",left="+(screen.width-840));
+    win.document.body.innerHTML = "<h3>Downloading database export...</h3>";
+    win.location.href='ajax/backupDb.php';
+}
