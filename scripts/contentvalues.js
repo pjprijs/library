@@ -60,6 +60,7 @@ let txtBooks = 'boeken';
 let txtDays = 'dagen';
 let txtPart = 'deel';
 let txtReadLevel = 'AVI';
+let txtAmount = 'aantal';
 let txtPublication = 'uitgave';
 let txtNoOnlineInformation = 'Geen informatie over dit boek gevonden online';
 let txtAddedToCollection = 'is toegevoegd aan de collectie';
@@ -68,6 +69,9 @@ let txtErrDelBooksLoaned = 'Er zijn nog boeken uitgeleeend.<br/>Alle boeken moet
 let txtConfirmDelete = 'Weet u zeker dat u dit wilt verwijderen?'
 let txtNotInSystem = 'Dit boek staat nog niet in het systeem. Wilt u deze toevoegen?';
 let txtCoverNotFound = 'Omslag niet gevonden voor';
+let txtDecrease = 'verlagen';
+let txtIncrease = 'verhogen';
+let txtNotNegative = 'aantal kan niet negatief zijn';
 
 //users
 let txtUser = 'leerling';
@@ -134,6 +138,7 @@ $(function() {
     $('.txt-search').html(txtSearch);
     $('.book-search-input').attr('placeholder', txtTitle + '/' + txtAuthor + '/isbn...');
     $('.txt-read-level').html(txtReadLevel);
+    $('.txt-amount').html(txtAmount);
     $('.txt-add-book').html(txtBook + ' ' + txtAdd);
     $('.txt-add-read-level').html(txtReadLevel + ' ' + txtAdd);
 

@@ -472,6 +472,17 @@ function showBookDetails(data) {
     $('.book-details-read-level').html(
         $('<span class="book-avi-label">').html(data.avi).append(' <i class="fas fa-pen clickable" onclick="bookEditAvi(true)" data-toggle="tooltip" title="' + txtEdit + '"></i>')
     ).append('<select class="form-select book-avi-edit hidden" onchange="bookUpdateAvi();">');
+    $('.book-details-amount').html(
+        $('<span class="book-details-amount-value">' + data.amount + '</span>&nbsp;&nbsp;')
+    ).append(
+        $('<font size="0.5em">').append(
+            ' <i class="fas fa-minus clickable" onclick="bookEditAmount(-1)" data-toggle="tooltip" title="' + txtDecrease + '"></i>'
+        ).append(
+            '&nbsp;/&nbsp;'
+        ).append(
+            ' <i class="fas fa-plus clickable" onclick="bookEditAmount(1)" data-toggle="tooltip" title="' + txtIncrease + '"></i>'
+        )
+    );
     $('.book-details-publication').html(data.published_date);
     $('.book-details-pages').html(data.pagecount);
     $('.book-details-image').html($('<img class="book-details-image-' + data.id + '" src="' + isbnImage + '" style="width: 150px;"/>'));  //   onerror="if(this.src != \'images/isbn/unknown.jpg\') this.src = \'images/isbn/unknown.jpg\';"
@@ -534,6 +545,25 @@ function bookUpdateAvi() {
         if(success) {            
             $('.book-avi-label').html($('.book-avi-edit option:selected').text()).append(' <i class="fas fa-pen clickable" onclick="bookEditAvi(true)" data-toggle="tooltip" title="' + txtEdit + '"></i>');
             bookEditAvi(false);
+        }
+    });
+}
+
+function bookEditAmount(value) {
+    let amount = parseInt($('.book-details-amount-value').html());
+    if(amount < 1 && value < 0) {
+        showErrorMsg(txtNotNegative);
+        return true;
+    }
+    if(amount < 2 && value < 0) {
+        if(!confirm(txtConfirmDelete)) return true;
+    }
+    doLoad('updateBookAmount.php', {
+        book: currentSelectedBook,
+        amount: value
+    }, function(success, data){
+        if(success) {            
+            $('.book-details-amount-value').html(data.amount);
         }
     });
 }
