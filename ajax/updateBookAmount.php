@@ -7,8 +7,10 @@ echo "\n/*\n";
 try {
 	$book = new Book();
 	$book->init((int)$_REQUEST["book"]);
-	$book->add();
+	$amount = (int)(isset($_REQUEST["amount"]) ? $_REQUEST["amount"] : "1");
+	$book->addAmount($amount);
 	$result["data"]["title"] = $book->getFulltitle();
+	$result["data"]["amount"] = $book->getAmount();
 	$result["error"] = 0;
 	$result["errorMsg"] = "";
 } catch(Exception $e) {

@@ -197,8 +197,12 @@ class Book implements BookInterface {
 
     public function addAmount($amount) {
         global $mysqli;
-        $this->amount = $amount;
-        $sql = "UPDATE book SET amount = amount + " . $this->amount . " WHERE id = " . $this->id;
+        $this->amount += $amount;
+        if($this->amount < 0) {
+            $this->amount = 0;
+            throw new Exception("Book::addAmount - Amount cannot be negative");
+        }
+        $sql = "UPDATE book SET amount = amount + " . $amount . " WHERE id = " . $this->id;
         $mysqli->query($sql);
         if($mysqli->errno > 0) {
             throw new Exception("Book::addAmount - " . $mysqli->error);
